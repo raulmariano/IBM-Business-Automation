@@ -1,0 +1,46 @@
+ødefVar --name currentDatetime --type DateTime
+defVar --name successQueueConnect --type Boolean
+defVar --name providerQueueConnection --type QueueConnection
+defVar --name successToObtainTheQueue --type Boolean
+defVar --name obtainedQueue --type MessageQueue
+defVar --name itemToQueueInsert --type String
+defVar --name csvTable --type DataTable
+defVar --name counter --type Numeric
+defVar --name email --type String
+defVar --name messageToInsert --type String
+defVar --name testTable --type DataTable
+defVar --name table --type DataTable
+defVar --name success --type Boolean
+defVar --name conn --type QueueConnection
+defVar --name id --type String
+defVar --name recentPurchase --type String
+defVar --name averageTicket --type String
+defVar --name quantityPurchases --type String
+defVar --name response --type String
+defVar --name statusCode --type Numeric
+defVar --name reasonPhrase --type String
+defVar --name headers --type StringDictionary --innertype String
+defVar --name contentHeaders --type StringDictionary --innertype String
+defVar --name score --type String
+defVar --name tableResponse --type DataTable
+defVar --name customerSegment --type String
+defVar --name customerScore --type String
+getCurrentDateAndTime --localorutc "LocalTime" currentDatetime=value
+readCSV --filepath "C:\\Users\\Administrator\\Downloads\\IBMRPA_DMOE\\data.csv" --delimiter ";" --hasheaders  --missingfieldaction "ParseError" csvTable=value
+webStart --name insertSegmentation --type "Chrome" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\Users\\Administrator\\AppData\\Local\\IBM Robotic Process Automation\\downloads"
+webNavigate --url "file:///C:\\Users\\Administrator\\Downloads\\IBMRPA_DMOE\\insertSegmentation.html"
+webWaitElement --selector "Id" --id idCustomer --timeout "00:00:50"
+for --variable ${counter} --from 1 --to ${csvTable.Rows} --step 1
+	mapTableRow --dataTable ${csvTable} --row ${counter} --mappings "[{\"Name\":null,\"Number\":\"1\",\"Output\":\"${id}\"},{\"Name\":null,\"Number\":\"2\",\"Output\":\"${email}\"},{\"Name\":null,\"Number\":\"3\",\"Output\":\"${recentPurchase}\"},{\"Name\":null,\"Number\":\"4\",\"Output\":\"${averageTicket}\"},{\"Name\":null,\"Number\":\"5\",\"Output\":\"${quantityPurchases}\"}]"
+	httpRequest --verb "Post" --url "http://localhost/dev-deployment-3829wtr834/DMN_3541C2F6-B378-459D-9980-E204D5238EC4" --formatter "Json" --source "{\r\n  \"inputData\": {\r\n    \"purchaseFrequency\": ${quantityPurchases},\r\n    \"averageTicket\": ${averageTicket},\r\n    \"recency\": ${recentPurchase},\r\n    \"id\": ${id} \r\n  }\r\n}" --noproxy  success=success response=value statusCode=statusCode reasonPhrase=reasonPhrase headers=headers contentHeaders=contentHeaders
+	jsonToTable --json "${response}" --jsonPath "$" tableResponse=value
+	getTableCell --dataTable ${tableResponse} --column 3 --row 1 customerSegment=value
+	getTableCell --dataTable ${tableResponse} --column 6 --row 1 customerScore=value
+	webSet --value "${id}" --selector "Id" --id idCustomer
+	webSet --value "${email}" --selector "Id" --id email
+	webSet --value "${customerScore}" --selector "Id" --id score
+	webSet --value "${customerSegment}" --selector "Id" --id segment
+	webSet --value "${currentDatetime}" --selector "XPath" --xpath "//*[@id=\"date\"]"
+	webClick --selector "XPath" --xpath "/html/body/div/div/div/button"
+next
+webClose --name insertSegmentation --leavebrowseropen *	23.0.18.0

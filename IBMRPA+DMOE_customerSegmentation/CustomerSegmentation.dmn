@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20230324/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="https://kie.org/dmn/extensions/1.0" expressionLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/" namespace="https://kie.org/dmn/_804CF497-461E-47C0-A287-FB863DF81525" id="_A31EF523-6B5D-424A-8D4E-96873FC99F78" name="DMN_3541C2F6-B378-459D-9980-E204D5238EC4">
+  <itemDefinition id="_AAF696AD-C433-4B77-861F-EB5B885C816F" name="customer" isCollection="false" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/">
+    <description>All data obtained from the client is mandatory for decision making</description>
+    <itemComponent id="_6219F6F1-E014-4649-91A3-4877DFADEE06" name="purchaseFrequency" isCollection="false" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/">
+      <typeRef>number</typeRef>
+    </itemComponent>
+    <itemComponent id="_376B7B6F-B8AE-405D-9292-EAD09543AF48" name="averageTicket" isCollection="false" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/">
+      <typeRef>number</typeRef>
+    </itemComponent>
+    <itemComponent id="_FF1AAD31-57C3-48E5-9DA5-06A89EE1E457" name="recency" isCollection="false" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/">
+      <typeRef>number</typeRef>
+    </itemComponent>
+    <itemComponent id="_203A4E88-E212-4576-B86C-A43D1870D372" name="id" isCollection="false" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/">
+      <typeRef>number</typeRef>
+    </itemComponent>
+  </itemDefinition>
+  <inputData name="inputData" id="_89CDE123-8B98-432D-A6D9-BD554B12F12E">
+    <variable name="inputData" id="_978302CC-C7F7-473C-895D-CE4518858B2C" typeRef="customer" />
+  </inputData>
+  <decision name="customerScore" id="_8484B077-315D-4EE4-BBEF-7BB1DC7D7229">
+    <variable id="_430647AF-CF12-43BF-8263-51012A496A6E" typeRef="number" name="customerScore" />
+    <informationRequirement id="_527BDC88-4B8D-47BE-BA76-9782D0A1F0ED">
+      <requiredDecision href="#_701777E5-32F4-42DD-B9A6-2A2E9A6634B2" />
+    </informationRequirement>
+    <informationRequirement id="_AC60F6DB-A012-4594-87B6-472F4748071E">
+      <requiredDecision href="#_ADE9F1CD-0017-4F4E-BA7A-AE2B12E933B6" />
+    </informationRequirement>
+    <informationRequirement id="_4263F5EB-2E9C-49F0-BAF4-AB408E3CBAB0">
+      <requiredDecision href="#_DD6A3D2A-4139-45B2-87C4-5C9BF25EB201" />
+    </informationRequirement>
+    <literalExpression id="_D167CB16-BE4A-4B87-9076-A2F851DEC446" typeRef="number" label="customerScore">
+      <text>recency_Score + ticket_Score + frequency_Score</text>
+    </literalExpression>
+  </decision>
+  <decision name="customerSegment" id="_532DB9A0-DAB3-4A9D-8643-C7E32E25AD26">
+    <variable id="_84D99742-8367-43FE-B927-679E96A454D4" typeRef="string" name="customerSegment" />
+    <informationRequirement id="_EE5BF067-6F61-4EF1-B82A-5B800A86BFC8">
+      <requiredDecision href="#_8484B077-315D-4EE4-BBEF-7BB1DC7D7229" />
+    </informationRequirement>
+    <decisionTable id="_A9774D77-C8FB-435E-8970-2F26FE49CF66" typeRef="string" hitPolicy="UNIQUE" label="customerSegment">
+      <input id="_DA85D1C9-9F5F-4A24-8B80-DCE94B72D776">
+        <inputExpression id="_0C9C7DCE-DD0C-4AE9-8857-883F62038EC5" typeRef="number">
+          <text>customerScore</text>
+        </inputExpression>
+      </input>
+      <output id="_3FF3A89E-27D2-4073-9534-B90B015E03B4" name="Output-1" />
+      <annotation name="Annotations" />
+      <rule id="_B5897574-4230-470A-8253-AA7077C8BF0D">
+        <inputEntry id="_BBE94830-A3EC-4A7E-821E-B788157CEAA2">
+          <text>&gt;=10</text>
+        </inputEntry>
+        <outputEntry id="_7DBA4398-625E-4967-A734-78D50878275D">
+          <text>&quot;Gold&quot;</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_106BDBE4-51E7-430A-99D5-B313452AA1DD">
+        <inputEntry id="_914E70F8-E460-416A-9017-04D73BAF4DAE">
+          <text>[7..9]</text>
+        </inputEntry>
+        <outputEntry id="_2A640A3F-ECD1-472C-A3A2-2D52A84AD398">
+          <text>&quot;Silver&quot;</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_4AE49EA9-DFDE-42A9-A26F-A2C804CA57A7">
+        <inputEntry id="_6A64625B-9873-46DF-881C-BBD2BABC57EC">
+          <text>[4..6]</text>
+        </inputEntry>
+        <outputEntry id="_729A33B5-72D6-4A66-A04A-C305ABBA635F">
+          <text>&quot;Bronze&quot;</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_ADAEAA2C-CF53-4803-A5F7-8038E40661AB">
+        <inputEntry id="_2C7C3065-DBDB-45F9-84EF-D13959D219DD">
+          <text>&lt;=3</text>
+        </inputEntry>
+        <outputEntry id="_E76F51A6-5D0B-4AF3-87FA-8597DC87E334">
+          <text>&quot;Low score&quot;</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision name="recency_Score" id="_ADE9F1CD-0017-4F4E-BA7A-AE2B12E933B6">
+    <variable id="_5826D544-C563-4428-83B4-DB3F39F6FEA9" typeRef="number" name="recency_Score" />
+    <informationRequirement id="_4671540D-259F-44EA-8ACE-495859996043">
+      <requiredInput href="#_89CDE123-8B98-432D-A6D9-BD554B12F12E" />
+    </informationRequirement>
+    <decisionTable id="_27F27BBC-CB0B-4B2A-A51B-C6BF7F499E28" typeRef="number" hitPolicy="UNIQUE" label="recency_Score">
+      <input id="_C7CCFDF7-D0C5-4ABB-B8B5-76B2F97F538B">
+        <inputExpression id="_489AEC93-A202-4B9B-A557-B546C67D74B5" typeRef="number">
+          <text>inputData.recency</text>
+        </inputExpression>
+      </input>
+      <output id="_43F80994-EC91-4DDC-B99E-4775711C70BB" name="Output-1" />
+      <annotation name="Annotations" />
+      <rule id="_343AECCF-874E-41AE-B7B2-985F2ED7C66D">
+        <inputEntry id="_9A75A7BB-0C4D-481E-9C4F-F137E3EA07DC">
+          <text>&lt;=30</text>
+        </inputEntry>
+        <outputEntry id="_7402AF31-9372-4F52-B90F-923692CF7DE0">
+          <text>5</text>
+        </outputEntry>
+        <annotationEntry>
+          <text>// Your annotations here</text>
+        </annotationEntry>
+      </rule>
+      <rule id="_B26B310F-3302-48BD-A8B4-2A35F0E42A9F">
+        <inputEntry id="_13F31C75-E4E5-4E47-9226-17A2BE8430D8">
+          <text>[31..60]</text>
+        </inputEntry>
+        <outputEntry id="_50CAA941-7EDE-40DE-B5E7-03017401CFE3">
+          <text>3</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_5E6FB019-552B-45E2-AD91-96254AC8E78E">
+        <inputEntry id="_01A4B986-14E1-4FE2-8D3F-24815697CE30">
+          <text>[61..90]</text>
+        </inputEntry>
+        <outputEntry id="_CAF3CD5C-C087-4C6C-8C36-C641B00E3C48">
+          <text>1</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_0A0CF350-BF80-4B5D-B959-671735CE271A">
+        <inputEntry id="_CF5A92D4-4B2D-49A7-868C-4F1779948F3D">
+          <text>&gt;=91</text>
+        </inputEntry>
+        <outputEntry id="_B10275B5-B6B4-4F5C-B413-C3A58818ADA6">
+          <text>0</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision name="ticket_Score" id="_701777E5-32F4-42DD-B9A6-2A2E9A6634B2">
+    <variable id="_0E24B099-0A8A-413D-A364-BCDBC688D356" typeRef="number" name="ticket_Score" />
+    <informationRequirement id="_BE6CFF7E-7E59-4313-AD39-F5EAF2539C74">
+      <requiredInput href="#_89CDE123-8B98-432D-A6D9-BD554B12F12E" />
+    </informationRequirement>
+    <decisionTable id="_9663BB06-2D4B-450B-9D79-86A68A28E91E" typeRef="number" hitPolicy="UNIQUE" label="ticket_Score">
+      <input id="_E170799B-EC1C-4C54-BCCF-1980915310D1">
+        <inputExpression id="_04EAB66A-3A40-4D22-9534-7EFF972291F6" typeRef="number">
+          <text>inputData.averageTicket</text>
+        </inputExpression>
+      </input>
+      <output id="_89DB17C4-2204-435A-A8BC-1F2745ADC613" name="Output-1" />
+      <annotation name="Annotations" />
+      <rule id="_222A8A9A-3DE1-495E-8201-90D0E462C900">
+        <inputEntry id="_C99DA3F5-B393-49C4-9FAF-86B438D0860F">
+          <text>&lt;=99.99</text>
+        </inputEntry>
+        <outputEntry id="_03FF696C-841A-4CA7-8DCF-B584D395547B">
+          <text>0</text>
+        </outputEntry>
+        <annotationEntry>
+          <text>// Your annotations here</text>
+        </annotationEntry>
+      </rule>
+      <rule id="_13C2EAB9-4C4F-4B53-8443-FE2A238CC7E7">
+        <inputEntry id="_9162DFDA-E942-45AB-8F1E-CDA0E8C3BECE">
+          <text>[100..199.99]</text>
+        </inputEntry>
+        <outputEntry id="_0E786C4D-74C5-48E4-997F-3FDB9F47B16C">
+          <text>1</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_D8BCEE07-AC5D-4180-9F44-ADE81EE8CE69">
+        <inputEntry id="_D92E93A2-6D9B-49E8-A606-062A94DDD6FE">
+          <text>&gt;=200</text>
+        </inputEntry>
+        <outputEntry id="_28D33724-8ACB-4D46-8B4E-ACDAAEBF2CBC">
+          <text>3</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision name="frequency_Score" id="_DD6A3D2A-4139-45B2-87C4-5C9BF25EB201">
+    <variable id="_6DB18A3F-5443-44B8-89FA-F7730BE9B0D6" typeRef="number" name="frequency_Score" />
+    <informationRequirement id="_61AE0D73-717F-49ED-B46B-AE324E0D992F">
+      <requiredInput href="#_89CDE123-8B98-432D-A6D9-BD554B12F12E" />
+    </informationRequirement>
+    <decisionTable id="_A7F37E29-DA25-4ADE-8C7D-22ED79F31682" typeRef="number" hitPolicy="UNIQUE" label="frequency_Score">
+      <input id="_4B2C0C10-8DAF-4D40-AEAD-7DF097B07D41">
+        <inputExpression id="_3576EE1D-50CF-4184-8ED5-525DFCD7F3C1" typeRef="number">
+          <text>inputData.purchaseFrequency</text>
+        </inputExpression>
+      </input>
+      <output id="_7DAF1908-09F8-41C3-B9F3-23DAE274A62C" name="Output-1" />
+      <annotation name="Annotations" />
+      <rule id="_F5174CAC-BB5A-4B90-892E-220FF5BC72F0">
+        <inputEntry id="_E77793CB-695A-4C9D-A7F2-5CD4D598EAAB">
+          <text>&lt;=3</text>
+        </inputEntry>
+        <outputEntry id="_40F3B9FA-FA17-423E-ABFB-B56015A468AE">
+          <text>0</text>
+        </outputEntry>
+        <annotationEntry>
+          <text>// Your annotations here</text>
+        </annotationEntry>
+      </rule>
+      <rule id="_EF1CF36A-C0BD-4E35-8A9E-DDBF34334EA6">
+        <inputEntry id="_1EB475BF-3DCE-4AE3-B5E6-3486B99306A7">
+          <text>[4..8]</text>
+        </inputEntry>
+        <outputEntry id="_B110ED73-03C7-45B7-9ABA-897DB19B10AE">
+          <text>1</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+      <rule id="_AE6769D5-7ACD-4C3E-AA3A-C9503B7F2316">
+        <inputEntry id="_09D4D93B-5515-46A8-904F-A1DA70EFA945">
+          <text>&gt;=9</text>
+        </inputEntry>
+        <outputEntry id="_972E95A4-8AB3-4A4B-AD73-C0291F0FA2F2">
+          <text>2</text>
+        </outputEntry>
+        <annotationEntry>
+          <text></text>
+        </annotationEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_0924D7AE-A300-4BC4-AC00-B6156659C3D4" name="Default DRD" useAlternativeInputDataShape="false">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_1320A4DA-0A63-4994-8BA3-1DD63EB06F92">
+            <kie:width>60</kie:width>
+            <kie:width>142</kie:width>
+            <kie:width>129</kie:width>
+            <kie:width>142</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_B51CEFAF-0567-439F-846F-24A8B2BD91EA">
+            <kie:width>60</kie:width>
+            <kie:width>118</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_AF53BF23-2077-4613-8B3F-4566412FB953">
+            <kie:width>60</kie:width>
+            <kie:width>197</kie:width>
+            <kie:width>185</kie:width>
+            <kie:width>197</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A3C085EB-6A88-4AAB-97EC-6A587911E043">
+            <kie:width>60</kie:width>
+            <kie:width>118</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_D167CB16-BE4A-4B87-9076-A2F851DEC446">
+            <kie:width>437</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A9774D77-C8FB-435E-8970-2F26FE49CF66">
+            <kie:width>60</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_27F27BBC-CB0B-4B2A-A51B-C6BF7F499E28">
+            <kie:width>60</kie:width>
+            <kie:width>123</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_9663BB06-2D4B-450B-9D79-86A68A28E91E">
+            <kie:width>60</kie:width>
+            <kie:width>160</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A7F37E29-DA25-4ADE-8C7D-22ED79F31682">
+            <kie:width>60</kie:width>
+            <kie:width>185</kie:width>
+            <kie:width>118</kie:width>
+            <kie:width>240</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="_E78B651C-310A-4392-8D8B-C372C36B6051" dmnElementRef="_89CDE123-8B98-432D-A6D9-BD554B12F12E" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="340" y="620" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_527E3DE7-2CEF-4DF6-90D3-D309A29EAD09" dmnElementRef="_8484B077-315D-4EE4-BBEF-7BB1DC7D7229" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="340" y="340" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_CED9C839-B888-4313-AF19-830DAB1205E9" dmnElementRef="_532DB9A0-DAB3-4A9D-8643-C7E32E25AD26" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="340" y="200" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_0051BE04-F395-4727-8CC6-257C730493BF" dmnElementRef="_EE5BF067-6F61-4EF1-B82A-5B800A86BFC8" sourceElement="_527E3DE7-2CEF-4DF6-90D3-D309A29EAD09" targetElement="_CED9C839-B888-4313-AF19-830DAB1205E9">
+        <di:waypoint x="420" y="340" />
+        <di:waypoint x="420" y="280" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_9F32BF42-5FEF-4D65-864E-4E135C570DC9" dmnElementRef="_ADE9F1CD-0017-4F4E-BA7A-AE2B12E933B6" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="120" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_1FFF06A8-E6F2-4D18-801E-E41984602377" dmnElementRef="_701777E5-32F4-42DD-B9A6-2A2E9A6634B2" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="340" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_EFCDED8C-62B6-4AB9-9D03-64FF2104A471-AUTO-TARGET" dmnElementRef="_BE6CFF7E-7E59-4313-AD39-F5EAF2539C74" sourceElement="_E78B651C-310A-4392-8D8B-C372C36B6051" targetElement="_1FFF06A8-E6F2-4D18-801E-E41984602377">
+        <di:waypoint x="420" y="660" />
+        <di:waypoint x="420" y="520" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_D31B6CB0-417D-40F9-B5E4-B454EA4A0CA3" dmnElementRef="_527BDC88-4B8D-47BE-BA76-9782D0A1F0ED" sourceElement="_1FFF06A8-E6F2-4D18-801E-E41984602377" targetElement="_527E3DE7-2CEF-4DF6-90D3-D309A29EAD09">
+        <di:waypoint x="420" y="520" />
+        <di:waypoint x="420" y="420" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_60468A30-6B79-4B32-822B-D10DA1FD7C44" dmnElementRef="_AC60F6DB-A012-4594-87B6-472F4748071E" sourceElement="_9F32BF42-5FEF-4D65-864E-4E135C570DC9" targetElement="_527E3DE7-2CEF-4DF6-90D3-D309A29EAD09">
+        <di:waypoint x="200" y="480" />
+        <di:waypoint x="340" y="380" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_E1AEDB5B-FF64-4B63-99F0-01F84470578C" dmnElementRef="_4671540D-259F-44EA-8ACE-495859996043" sourceElement="_E78B651C-310A-4392-8D8B-C372C36B6051" targetElement="_9F32BF42-5FEF-4D65-864E-4E135C570DC9">
+        <di:waypoint x="420" y="660" />
+        <di:waypoint x="200" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="_51E68263-636B-4AAB-964A-DA76553DB676" dmnElementRef="_DD6A3D2A-4139-45B2-87C4-5C9BF25EB201" isCollapsed="false" isListedInputData="false">
+        <dc:Bounds x="560" y="480" width="160" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_1AC8D7FF-E6E0-4105-8B5A-45FE769DBE66" dmnElementRef="_61AE0D73-717F-49ED-B46B-AE324E0D992F" sourceElement="_E78B651C-310A-4392-8D8B-C372C36B6051" targetElement="_51E68263-636B-4AAB-964A-DA76553DB676">
+        <di:waypoint x="420" y="660" />
+        <di:waypoint x="640" y="560" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_AFF28B46-AF19-4680-879E-31149D5C78E5" dmnElementRef="_4263F5EB-2E9C-49F0-BAF4-AB408E3CBAB0" sourceElement="_51E68263-636B-4AAB-964A-DA76553DB676" targetElement="_527E3DE7-2CEF-4DF6-90D3-D309A29EAD09">
+        <di:waypoint x="640" y="480" />
+        <di:waypoint x="500" y="380" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
